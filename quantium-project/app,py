@@ -1,0 +1,27 @@
+import pandas as pd
+from dash import Dash, html, dcc
+import plotly.express as px
+
+# Load your data
+df = pd.read_csv("output.csv")
+
+# Convert date
+df["date"] = pd.to_datetime(df["date"])
+
+# Sort data
+df = df.sort_values("date")
+
+# Create graph
+fig = px.line(df, x="date", y="sales")
+
+# Create app
+app = Dash(__name__)
+
+app.layout = html.Div([
+    html.H1("Pink Morsel Sales Dashboard"),   # Header
+
+    dcc.Graph(figure=fig)   # Chart
+])
+
+if __name__ == "__main__":
+    app.run(debug=True)
